@@ -6,7 +6,7 @@ package B::Hooks::EndOfScope;
 use 5.008000;
 use Scope::Guard;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 our $SCOPE_HOOK_KEY = 'SCOPE_END_HOOK';
 
@@ -46,7 +46,7 @@ This is exported by default. See L<Sub::Exporter> on how to customize it.
 sub on_scope_end (&) {
     my $cb = shift;
 
-    $^H |= 0x120000;
+    $^H |= 0x020000;
     $^H{ $SCOPE_HOOK_KEY } = [Scope::Guard->new($cb), @{ $^H{ $SCOPE_HOOK_KEY } || [] }];
 }
 
