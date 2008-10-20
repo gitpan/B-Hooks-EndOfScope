@@ -17,7 +17,11 @@ FUNCTIONS
     Registers $code to be executed after the surrounding scope has been
     compiled.
 
+    This is exported by default. See Sub::Exporter on how to customize it.
+
 SEE ALSO
+    Sub::Exporter
+
     Scope::Guard
 
 AUTHOR

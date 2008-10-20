@@ -3,9 +3,10 @@ use warnings;
 
 package B::Hooks::EndOfScope;
 
+use 5.008000;
 use Scope::Guard;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 our $SCOPE_HOOK_KEY = 'SCOPE_END_HOOK';
 
@@ -38,6 +39,8 @@ surrounding scope.
 Registers C<$code> to be executed after the surrounding scope has been
 compiled.
 
+This is exported by default. See L<Sub::Exporter> on how to customize it.
+
 =cut
 
 sub on_scope_end (&) {
@@ -48,6 +51,8 @@ sub on_scope_end (&) {
 }
 
 =head1 SEE ALSO
+
+L<Sub::Exporter>
 
 L<Scope::Guard>
 
