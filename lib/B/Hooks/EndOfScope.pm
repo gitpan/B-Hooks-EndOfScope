@@ -4,11 +4,9 @@ use warnings;
 package B::Hooks::EndOfScope;
 
 use 5.008000;
-use Scope::Guard;
+use Variable::Magic;
 
-our $VERSION = '0.04';
-
-our $SCOPE_HOOK_KEY = 'SCOPE_END_HOOK';
+our $VERSION = '0.05';
 
 use Sub::Exporter -setup => {
     exports => ['on_scope_end'],
@@ -43,18 +41,30 @@ This is exported by default. See L<Sub::Exporter> on how to customize it.
 
 =cut
 
-sub on_scope_end (&) {
-    my $cb = shift;
+{
+    my $wiz = Variable::Magic::wizard
+        data => sub { [$_[1]] },
+        free => sub { $_->() for @{ $_[1] }; () };
 
-    $^H |= 0x020000;
-    $^H{ $SCOPE_HOOK_KEY } = [Scope::Guard->new($cb), @{ $^H{ $SCOPE_HOOK_KEY } || [] }];
+    sub on_scope_end (&) {
+        my $cb = shift;
+
+        $^H |= 0x020000;
+
+        if (my $stack = Variable::Magic::getdata %^H, $wiz) {
+            push @{ $stack }, $cb;
+        }
+        else {
+            Variable::Magic::cast %^H, $wiz, $cb;
+        }
+    }
 }
 
 =head1 SEE ALSO
 
 L<Sub::Exporter>
 
-L<Scope::Guard>
+L<Variable::Magic>
 
 =head1 AUTHOR
 

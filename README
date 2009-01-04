@@ -22,7 +22,7 @@ FUNCTIONS
 SEE ALSO
     Sub::Exporter
 
-    Scope::Guard
+    Variable::Magic
 
 AUTHOR
     Florian Ragwitz <rafl@debian.org>
