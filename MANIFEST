@@ -16,5 +16,6 @@ META.yml
 README
 t/basic.t
 t/eval.t
+t/exception.t
 xt/author/pod.t
 xt/author/podcoverage.t
