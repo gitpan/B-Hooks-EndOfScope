@@ -2,7 +2,7 @@ NAME
     B::Hooks::EndOfScope - Execute code after a scope finished compilation
 
 SYNOPSIS
-        on_scope_end { ...  };
+        on_scope_end { ... };
 
 DESCRIPTION
     This module allows you to execute code when perl finished compiling the
