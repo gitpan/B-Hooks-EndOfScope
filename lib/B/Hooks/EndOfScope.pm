@@ -2,16 +2,48 @@ use strict;
 use warnings;
 
 package B::Hooks::EndOfScope;
+BEGIN {
+  $B::Hooks::EndOfScope::AUTHORITY = 'cpan:FLORA';
+}
+BEGIN {
+  $B::Hooks::EndOfScope::VERSION = '0.09';
+}
+# ABSTRACT: Execute code after a scope finished compilation
 
 use 5.008000;
-use Variable::Magic;
-
-our $VERSION = '0.08';
+use Variable::Magic 0.34;
 
 use Sub::Exporter -setup => {
     exports => ['on_scope_end'],
     groups  => { default => ['on_scope_end'] },
 };
+
+
+
+{
+    my $wiz = Variable::Magic::wizard
+        data => sub { [$_[1]] },
+        free => sub { $_->() for @{ $_[1] }; () };
+
+    sub on_scope_end (&) {
+        my $cb = shift;
+
+        $^H |= 0x020000;
+
+        if (my $stack = Variable::Magic::getdata %^H, $wiz) {
+            push @{ $stack }, $cb;
+        }
+        else {
+            Variable::Magic::cast %^H, $wiz, $cb;
+        }
+    }
+}
+
+
+1;
+
+__END__
+=pod
 
 =head1 NAME
 
@@ -39,27 +71,6 @@ compiled.
 
 This is exported by default. See L<Sub::Exporter> on how to customize it.
 
-=cut
-
-{
-    my $wiz = Variable::Magic::wizard
-        data => sub { [$_[1]] },
-        free => sub { $_->() for @{ $_[1] }; () };
-
-    sub on_scope_end (&) {
-        my $cb = shift;
-
-        $^H |= 0x020000;
-
-        if (my $stack = Variable::Magic::getdata %^H, $wiz) {
-            push @{ $stack }, $cb;
-        }
-        else {
-            Variable::Magic::cast %^H, $wiz, $cb;
-        }
-    }
-}
-
 =head1 SEE ALSO
 
 L<Sub::Exporter>
@@ -68,16 +79,14 @@ L<Variable::Magic>
 
 =head1 AUTHOR
 
-Florian Ragwitz E<lt>rafl@debian.orgE<gt>
+  Florian Ragwitz <rafl@debian.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2008  Florian Ragwitz
+This software is copyright (c) 2010 by Florian Ragwitz.
 
-This module is free software.
-
-You may distribute this code under the same terms as Perl itself.
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
 
 =cut
 
-1;
