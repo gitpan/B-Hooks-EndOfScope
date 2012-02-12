@@ -3,17 +3,17 @@ BEGIN {
   $B::Hooks::EndOfScope::XS::AUTHORITY = 'cpan:FLORA';
 }
 {
-  $B::Hooks::EndOfScope::XS::VERSION = '0.09_01';
+  $B::Hooks::EndOfScope::XS::VERSION = '0.09_02';
 }
 # ABSTRACT: Execute code after a scope finished compilation - XS implementation
 
 use strict;
 use warnings;
 
-use Class::Load 'load_class';
 BEGIN {
+  require Module::Runtime;
   # Adjust the Makefile.PL if changing this minimum version
-  load_class 'Variable::Magic', { -version => '0.34' }
+  Module::Runtime::use_module('Variable::Magic', '0.34');
 }
 
 use Sub::Exporter -setup => {
@@ -70,9 +70,19 @@ compiled.
 
 This is exported by default. See L<Sub::Exporter> on how to customize it.
 
-=head1 AUTHOR
+=head1 AUTHORS
+
+=over 4
+
+=item *
 
 Florian Ragwitz <rafl@debian.org>
+
+=item *
+
+Peter Rabbitson <ribasushi@cpan.org>
+
+=back
 
 =head1 COPYRIGHT AND LICENSE
 

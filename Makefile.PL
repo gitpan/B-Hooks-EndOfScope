@@ -8,15 +8,18 @@ my $mymeta_works = eval { ExtUtils::MakeMaker->VERSION('6.5707'); 1 };
 my $mymeta = $mymeta_works || eval { ExtUtils::MakeMaker->VERSION('6.5702'); 1 };
 
 my %BUILD_DEPS = (
+# this is liquid horror!!! (but so seems the entire MakeMaker::Custom)
     'Test::More' => '0.88'
 );
 
 my %RUN_DEPS = (
-    'Class::Load' => '0.13',
+# this is liquid horror!!! (but so seems the entire MakeMaker::Custom)
+    'Module::Implementation' => '0.05',
+    'Module::Runtime' => '0.012',
     'Sub::Exporter' => '0.981'
 );
 
-my %OPT_RUN_DEPS = (can_cc() ? (
+my %OPT_RUN_DEPS = (can_xs() ? (
   'Variable::Magic' => '0.34', # when changing, also change it in B::Hooks::EndOfScope::XS
 
   # make sure we smoke the pure-perl version fallback
@@ -32,6 +35,11 @@ my %WriteMakefileArgs = (
   "VERSION_FROM" => 'lib/B/Hooks/EndOfScope.pm',
   "test" => {
     "TESTS" => "t/*.t"
+  },
+
+  'CONFIGURE_REQUIRES' => {
+    'ExtUtils::CBuilder' => '0.26',
+    'ExtUtils::MakeMaker' => '6.30'
   },
 
   "PREREQ_PM" => {
@@ -76,6 +84,20 @@ delete $WriteMakefileArgs{CONFIGURE_REQUIRES}
 
 WriteMakefile(%WriteMakefileArgs);
 
+# Secondary compile testing via ExtUtils::CBuilder
+sub can_xs {
+  # Do we have the configure_requires checker?
+  local $@;
+  eval "require ExtUtils::CBuilder;";
+  if (! $@ ) {
+    # They don't obey configure_requires, so it is
+    # someone old and delicate. Try to avoid hurting
+    # them by falling back to an older simpler test.
+    return can_cc();
+  }
+
+  return ExtUtils::CBuilder->new( quiet => 1 )->have_compiler;
+}
 
 # can we locate a (the) C compiler
 sub can_cc {
@@ -109,5 +131,5 @@ sub can_run {
 
 # is this a smoker?
 sub is_smoker {
-  return ( $ENV{AUTOMATED_TESTING} && ! $ENV{PERL5_CPANM_IS_RUNNING} && ! $ENV{RELEASE_TESTING} )
+  return ( $ENV{AUTOMATED_TESTING} && ! $ENV{RELEASE_TESTING} )
 }

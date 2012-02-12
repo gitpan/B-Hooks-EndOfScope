@@ -11,12 +11,15 @@ use Config;
 use FindBin qw($Bin);
 use IPC::Open2 qw(open2);
 
+# in case the user had it set
+$ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION} = '';
+
 # for the $^X-es
 $ENV{PERL5LIB} = join ($Config{path_sep}, @INC);
 
 my $has_dh = eval { require Devel::Hide };
 $ENV{DEVEL_HIDE_VERBOSE} = 0 if $has_dh;
-$ENV{B_HOOKS_ENDOFSCOPE_USE_XS} = 0 unless $has_dh;
+$ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION} = 'PP' unless $has_dh;
 
 # rerun the tests under the assumption of no vm at all
 for my $fn (glob("$Bin/0*.t")) {

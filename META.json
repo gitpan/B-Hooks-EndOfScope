@@ -1,7 +1,8 @@
 {
    "abstract" : "Execute code after a scope finished compilation",
    "author" : [
-      "Florian Ragwitz <rafl@debian.org>"
+      "Florian Ragwitz <rafl@debian.org>",
+      "Peter Rabbitson <ribasushi@cpan.org>"
    ],
    "dynamic_config" : "1",
    "generated_by" : "Dist::Zilla version 4.300007, CPAN::Meta::Converter version 2.113640",
@@ -16,12 +17,14 @@
    "prereqs" : {
       "configure" : {
          "requires" : {
+            "ExtUtils::CBuilder" : "0.26",
             "ExtUtils::MakeMaker" : "6.30"
          }
       },
       "runtime" : {
          "requires" : {
-            "Class::Load" : "0.13",
+            "Module::Implementation" : "0.05",
+            "Module::Runtime" : "0.012",
             "Sub::Exporter" : "0.981"
          }
       },
@@ -44,7 +47,7 @@
          "web" : "http://github.com/rafl/b-hooks-endofscope"
       }
    },
-   "version" : "0.09_01",
+   "version" : "0.09_02",
    "x_Dist_Zilla" : {
       "plugins" : [
          {
@@ -67,6 +70,17 @@
                }
             },
             "name" : "TestRequires",
+            "version" : "4.300007"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::Prereqs",
+            "config" : {
+               "Dist::Zilla::Plugin::Prereqs" : {
+                  "phase" : "configure",
+                  "type" : "requires"
+               }
+            },
+            "name" : "ConfigureRequires",
             "version" : "4.300007"
          },
          {

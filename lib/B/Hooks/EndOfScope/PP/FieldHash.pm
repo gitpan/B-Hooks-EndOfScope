@@ -54,9 +54,19 @@ __END__
 
 B::Hooks::EndOfScope::PP::FieldHash
 
-=head1 AUTHOR
+=head1 AUTHORS
+
+=over 4
+
+=item *
 
 Florian Ragwitz <rafl@debian.org>
+
+=item *
+
+Peter Rabbitson <ribasushi@cpan.org>
+
+=back
 
 =head1 COPYRIGHT AND LICENSE
 

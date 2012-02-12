@@ -3,7 +3,7 @@ BEGIN {
   $B::Hooks::EndOfScope::AUTHORITY = 'cpan:FLORA';
 }
 {
-  $B::Hooks::EndOfScope::VERSION = '0.09_01';
+  $B::Hooks::EndOfScope::VERSION = '0.09_02';
 }
 # ABSTRACT: Execute code after a scope finished compilation
 
@@ -15,27 +15,23 @@ use warnings;
 # will be gladly accepted
 use 5.008001;
 
-use Class::Load 'try_load_class';
-
-our $USE_XS = $ENV{B_HOOKS_ENDOFSCOPE_USE_XS};
+use Module::Implementation;
 
 use Sub::Exporter -setup => {
   exports => [on_scope_end => sub {
 
-    if (defined $USE_XS) {
-      load_class('B::Hooks::EndOfScope::XS') if $USE_XS;
-    }
-    else {
-      try_load_class('B::Hooks::EndOfScope::XS')
-        || delete $INC{'B/Hooks/EndOfScope/XS.pm'}; # WTF is this even necessary...? need to test t_l_c later
-    }
+    my $impl = Module::Implementation::implementation_for('B::Hooks::EndOfScope') || do {
+      Module::Implementation::build_loader_sub(
+        implementations => [ 'XS',  'PP' ],
+        symbols => [ 'on_scope_end' ],
+      )->();
+      Module::Implementation::implementation_for('B::Hooks::EndOfScope');
+    };
 
-    if ($USE_XS or $INC{'B/Hooks/EndOfScope/XS.pm'}
-    ) {
+    if ($impl eq 'XS') {
       \&B::Hooks::EndOfScope::XS::on_scope_end;
     }
     else {
-      require B::Hooks::EndOfScope::PP;
       \&B::Hooks::EndOfScope::PP::on_scope_end;
     }
   }],
@@ -92,7 +88,8 @@ to import from the desired implementation explicitly:
    or
  use B::Hooks::EndOfScope::PP
 
-or by setting C<$ENV{B_HOOKS_ENDOFSCOPE_USE_XS}> to a true or false value
+or by setting C<$ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION}> to either C<XS> or
+C<PP>.
 
 =head1 SEE ALSO
 
@@ -100,9 +97,19 @@ L<Sub::Exporter>
 
 L<Variable::Magic>
 
-=head1 AUTHOR
+=head1 AUTHORS
+
+=over 4
+
+=item *
 
 Florian Ragwitz <rafl@debian.org>
+
+=item *
+
+Peter Rabbitson <ribasushi@cpan.org>
+
+=back
 
 =head1 COPYRIGHT AND LICENSE
 

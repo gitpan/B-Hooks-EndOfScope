@@ -1,10 +1,9 @@
 use strict;
 use warnings;
 use Test::More;
-use Class::Load 'try_load_class';
 
 BEGIN {
-  try_load_class('B::Hooks::EndOfScope::XS')
+  eval { require B::Hooks::EndOfScope::XS }
     or plan skip_all => "XS functionality not available";
 
   B::Hooks::EndOfScope::XS->import();

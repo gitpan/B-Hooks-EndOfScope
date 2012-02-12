@@ -3,27 +3,27 @@ BEGIN {
   $B::Hooks::EndOfScope::PP::AUTHORITY = 'cpan:FLORA';
 }
 {
-  $B::Hooks::EndOfScope::PP::VERSION = '0.09_01';
+  $B::Hooks::EndOfScope::PP::VERSION = '0.09_02';
 }
 # ABSTRACT: Execute code after a scope finished compilation - PP implementation
 
 use warnings;
 use strict;
 
-use Carp;
-
-use constant PERL_VERSION => "$]";
+use Module::Runtime 'require_module';
+use constant _PERL_VERSION => "$]";
 
 BEGIN {
-  if (PERL_VERSION =~ /5.009/) {
+  if (_PERL_VERSION =~ /^5\.009/) {
+    # CBA to figure out where %^H got broken and which H::U::HH is sane enough
     die "B::Hooks::EndOfScope does not operate on perl 5.9.X in pure-perl mode by design\n"
   }
-  elsif (PERL_VERSION < '5.010') {
-    require B::Hooks::EndOfScope::PP::HintHash;
+  elsif (_PERL_VERSION < '5.010') {
+    require_module('B::Hooks::EndOfScope::PP::HintHash');
     *on_scope_end = \&B::Hooks::EndOfScope::PP::HintHash::on_scope_end;
   }
   else {
-    require B::Hooks::EndOfScope::PP::FieldHash;
+    require_module('B::Hooks::EndOfScope::PP::FieldHash');
     *on_scope_end = \&B::Hooks::EndOfScope::PP::FieldHash::on_scope_end;
   }
 }
@@ -35,7 +35,7 @@ use Sub::Exporter -setup => {
 
 sub __invoke_callback {
   do {
-    local $@ if PERL_VERSION < '5.013002';
+    local $@ if _PERL_VERSION < '5.013002';
     eval { $_[0]->(); 1 };
   } or do {
     my $err = $@;
@@ -47,7 +47,7 @@ sub __invoke_callback {
       'exception text, followed by a stack-trace of the callback execution:',
     ) . "\n\n$err\n\r" );
 
-    sleep 3 if -t *STDIN;  # maybe a bad idea...?
+    sleep 1 if -t *STDERR;  # maybe a bad idea...?
 
     $@ = $err;  # not that it matters much
   };
@@ -70,8 +70,8 @@ B::Hooks::EndOfScope::PP - Execute code after a scope finished compilation - PP 
 This is the pure-perl implementation of L<B::Hooks::EndOfScope> based only on
 modules available as part of the perl core. Its leaner sibling
 L<B::Hooks::EndOfScope::XS> will be automatically preferred if all
-dependencies are available and C<$ENV{B_HOOKS_ENDOFSCOPE_USE_XS}> is not set
-to a false value.
+dependencies are available and C<$ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION}> is
+not set to C<'PP'>.
 
 =head1 FUNCTIONS
 
@@ -86,9 +86,19 @@ compiled.
 
 This is exported by default. See L<Sub::Exporter> on how to customize it.
 
-=head1 AUTHOR
+=head1 AUTHORS
+
+=over 4
+
+=item *
 
 Florian Ragwitz <rafl@debian.org>
+
+=item *
+
+Peter Rabbitson <ribasushi@cpan.org>
+
+=back
 
 =head1 COPYRIGHT AND LICENSE
 

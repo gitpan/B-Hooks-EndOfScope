@@ -2,9 +2,11 @@
 abstract: 'Execute code after a scope finished compilation'
 author:
   - 'Florian Ragwitz <rafl@debian.org>'
+  - 'Peter Rabbitson <ribasushi@cpan.org>'
 build_requires:
   Test::More: 0.88
 configure_requires:
+  ExtUtils::CBuilder: 0.26
   ExtUtils::MakeMaker: 6.30
 dynamic_config: 1
 generated_by: 'Dist::Zilla version 4.300007, CPAN::Meta::Converter version 2.113640'
@@ -14,13 +16,14 @@ meta-spec:
   version: 1.4
 name: B-Hooks-EndOfScope
 requires:
-  Class::Load: 0.13
+  Module::Implementation: 0.05
+  Module::Runtime: 0.012
   Sub::Exporter: 0.981
 resources:
   bugtracker: http://rt.cpan.org/Public/Dist/Display.html?Name=B-Hooks-EndOfScope
   homepage: http://metacpan.org/release/B-Hooks-EndOfScope
   repository: git://github.com/rafl/b-hooks-endofscope.git
-version: 0.09_01
+version: 0.09_02
 x_Dist_Zilla:
   plugins:
     -
@@ -38,6 +41,14 @@ x_Dist_Zilla:
           phase: test
           type: requires
       name: TestRequires
+      version: 4.300007
+    -
+      class: Dist::Zilla::Plugin::Prereqs
+      config:
+        Dist::Zilla::Plugin::Prereqs:
+          phase: configure
+          type: requires
+      name: ConfigureRequires
       version: 4.300007
     -
       class: Dist::Zilla::Plugin::Metadata
