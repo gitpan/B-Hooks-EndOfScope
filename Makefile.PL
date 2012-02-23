@@ -9,25 +9,27 @@ use ExtUtils::MakeMaker 6.30;
 
 
 my %WriteMakefileArgs = (
-  'ABSTRACT' => 'Execute code after a scope finished compilation',
-  'AUTHOR' => 'Florian Ragwitz <rafl@debian.org>',
-  'BUILD_REQUIRES' => {
-    'Test::More' => '0.89'
+  "ABSTRACT" => "Execute code after a scope finished compilation",
+  "AUTHOR" => "Florian Ragwitz <rafl\@debian.org>",
+  "BUILD_REQUIRES" => {
+    "Test::More" => "0.89"
   },
-  'CONFIGURE_REQUIRES' => {
-    'ExtUtils::MakeMaker' => '6.30'
+  "CONFIGURE_REQUIRES" => {
+    "ExtUtils::MakeMaker" => "6.30"
   },
-  'DISTNAME' => 'B-Hooks-EndOfScope',
-  'EXE_FILES' => [],
-  'LICENSE' => 'perl',
-  'NAME' => 'B::Hooks::EndOfScope',
-  'PREREQ_PM' => {
-    'Sub::Exporter' => '0',
-    'Variable::Magic' => '0.34'
+  "DISTNAME" => "B-Hooks-EndOfScope",
+  "EXE_FILES" => [],
+  "LICENSE" => "perl",
+  "NAME" => "B::Hooks::EndOfScope",
+  "PREREQ_PM" => {
+    "Sub::Exporter" => 0,
+    "Variable::Magic" => "0.48",
+    "strict" => 0,
+    "warnings" => 0
   },
-  'VERSION' => '0.10',
-  'test' => {
-    'TESTS' => 't/*.t'
+  "VERSION" => "0.11",
+  "test" => {
+    "TESTS" => "t/*.t"
   }
 );
 
