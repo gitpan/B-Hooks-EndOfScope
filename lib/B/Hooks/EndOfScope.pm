@@ -3,7 +3,7 @@ BEGIN {
   $B::Hooks::EndOfScope::AUTHORITY = 'cpan:FLORA';
 }
 {
-  $B::Hooks::EndOfScope::VERSION = '0.11_01';
+  $B::Hooks::EndOfScope::VERSION = '0.11_02';
 }
 # ABSTRACT: Execute code after a scope finished compilation
 
@@ -15,12 +15,11 @@ use warnings;
 # will be gladly accepted
 use 5.008001;
 
-my $exp_ose;
 BEGIN {
   require Module::Implementation;
   my $impl = Module::Implementation::implementation_for('B::Hooks::EndOfScope') || do {
     Module::Implementation::build_loader_sub(
-      implementations => [ 'XS',  'PP' ],
+      implementations => [ 'XS', 'PP' ],
       symbols => [ 'on_scope_end' ],
     )->();
     Module::Implementation::implementation_for('B::Hooks::EndOfScope');

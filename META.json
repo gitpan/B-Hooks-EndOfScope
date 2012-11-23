@@ -54,7 +54,7 @@
          "web" : "http://github.com/rafl/b-hooks-endofscope"
       }
    },
-   "version" : "0.11_01",
+   "version" : "0.11_02",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.014002"

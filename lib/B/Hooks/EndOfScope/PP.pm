@@ -3,7 +3,7 @@ BEGIN {
   $B::Hooks::EndOfScope::PP::AUTHORITY = 'cpan:FLORA';
 }
 {
-  $B::Hooks::EndOfScope::PP::VERSION = '0.11_01';
+  $B::Hooks::EndOfScope::PP::VERSION = '0.11_02';
 }
 # ABSTRACT: Execute code after a scope finished compilation - PP implementation
 
@@ -34,10 +34,8 @@ use Sub::Exporter::Progressive -setup => {
 };
 
 sub __invoke_callback {
-  do {
-    local $@ if _PERL_VERSION < '5.013002';
-    eval { $_[0]->(); 1 };
-  } or do {
+  local $@;
+  eval { $_[0]->(); 1 } or do {
     my $err = $@;
     require Carp;
     Carp::cluck( (join ' ',

@@ -3,7 +3,7 @@ BEGIN {
   $B::Hooks::EndOfScope::XS::AUTHORITY = 'cpan:FLORA';
 }
 {
-  $B::Hooks::EndOfScope::XS::VERSION = '0.11_01';
+  $B::Hooks::EndOfScope::XS::VERSION = '0.11_02';
 }
 # ABSTRACT: Execute code after a scope finished compilation - XS implementation
 
