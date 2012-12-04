@@ -3,7 +3,7 @@ BEGIN {
   $B::Hooks::EndOfScope::PP::AUTHORITY = 'cpan:FLORA';
 }
 {
-  $B::Hooks::EndOfScope::PP::VERSION = '0.11_02';
+  $B::Hooks::EndOfScope::PP::VERSION = '0.12';
 }
 # ABSTRACT: Execute code after a scope finished compilation - PP implementation
 
@@ -53,7 +53,6 @@ sub __invoke_callback {
 1;
 
 __END__
-
 =pod
 
 =encoding utf-8
@@ -105,3 +104,4 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
+

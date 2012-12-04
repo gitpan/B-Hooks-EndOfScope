@@ -3,7 +3,7 @@ BEGIN {
   $B::Hooks::EndOfScope::AUTHORITY = 'cpan:FLORA';
 }
 {
-  $B::Hooks::EndOfScope::VERSION = '0.11_02';
+  $B::Hooks::EndOfScope::VERSION = '0.12';
 }
 # ABSTRACT: Execute code after a scope finished compilation
 
@@ -40,7 +40,6 @@ use Sub::Exporter::Progressive -setup => {
 1;
 
 __END__
-
 =pod
 
 =encoding utf-8
@@ -118,3 +117,4 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
+

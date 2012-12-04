@@ -9,7 +9,7 @@ configure_requires:
   ExtUtils::CBuilder: 0.26
   ExtUtils::MakeMaker: 6.30
 dynamic_config: 1
-generated_by: 'Dist::Zilla version 4.300028, CPAN::Meta::Converter version 2.120630'
+generated_by: 'Dist::Zilla version 4.300028, CPAN::Meta::Converter version 2.120921'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -23,10 +23,10 @@ resources:
   bugtracker: http://rt.cpan.org/Public/Dist/Display.html?Name=B-Hooks-EndOfScope
   homepage: http://metacpan.org/release/B-Hooks-EndOfScope
   repository: git://github.com/rafl/b-hooks-endofscope.git
-version: 0.11_02
+version: 0.12
 x_Dist_Zilla:
   perl:
-    version: 5.014002
+    version: 5.016000
   plugins:
     -
       class: Dist::Zilla::Plugin::Prereqs

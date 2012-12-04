@@ -5,7 +5,7 @@
       "Peter Rabbitson <ribasushi@cpan.org>"
    ],
    "dynamic_config" : "1",
-   "generated_by" : "Dist::Zilla version 4.300028, CPAN::Meta::Converter version 2.120630",
+   "generated_by" : "Dist::Zilla version 4.300028, CPAN::Meta::Converter version 2.120921",
    "license" : [
       "perl_5"
    ],
@@ -41,7 +41,7 @@
          }
       }
    },
-   "release_status" : "testing",
+   "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
          "mailto" : "bug-B-Hooks-EndOfScope@rt.cpan.org",
@@ -54,10 +54,10 @@
          "web" : "http://github.com/rafl/b-hooks-endofscope"
       }
    },
-   "version" : "0.11_02",
+   "version" : "0.12",
    "x_Dist_Zilla" : {
       "perl" : {
-         "version" : "5.014002"
+         "version" : "5.016000"
       },
       "plugins" : [
          {
