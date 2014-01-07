@@ -8,7 +8,7 @@ my $mymeta = $mymeta_works || eval { ExtUtils::MakeMaker->VERSION('6.5702'); 1 }
 
 my %BUILD_DEPS = (
 # this is liquid horror!!! (but so seems the entire MakeMaker::Custom)
-    'Test::More' => '0.88'
+
 );
 
 my %RUN_DEPS = (
@@ -19,7 +19,7 @@ my %RUN_DEPS = (
 );
 
 my %OPT_RUN_DEPS = (can_xs() ? (
-  'Variable::Magic' => '0.48', # when changing, also change it in B::Hooks::EndOfScope::XS
+  'Variable::Magic' => '0.48', # when changing, also update in dist.ini, B::Hooks::EndOfScope::XS
 
   # make sure we smoke the pure-perl version fallback
   is_smoker() ? ( 'Devel::Hide' => '0.0007' ) : (),
@@ -86,9 +86,7 @@ WriteMakefile(%WriteMakefileArgs);
 # Secondary compile testing via ExtUtils::CBuilder
 sub can_xs {
   # Do we have the configure_requires checker?
-  local $@;
-  eval "require ExtUtils::CBuilder;";
-  if (! $@ ) {
+  unless (eval 'require ExtUtils::CBuilder; 1') {
     # They don't obey configure_requires, so it is
     # someone old and delicate. Try to avoid hurting
     # them by falling back to an older simpler test.
@@ -130,5 +128,5 @@ sub can_run {
 
 # is this a smoker?
 sub is_smoker {
-  return ( $ENV{AUTOMATED_TESTING} && ! $ENV{RELEASE_TESTING} )
+  return ( $ENV{AUTOMATED_TESTING} )
 }

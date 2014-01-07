@@ -1,9 +1,11 @@
 package B::Hooks::EndOfScope;
+{
+  $B::Hooks::EndOfScope::VERSION = '0.13';
+}
+# git description: 0.12-15-g7013f3a
+
 BEGIN {
   $B::Hooks::EndOfScope::AUTHORITY = 'cpan:FLORA';
-}
-{
-  $B::Hooks::EndOfScope::VERSION = '0.12';
 }
 # ABSTRACT: Execute code after a scope finished compilation
 
@@ -17,18 +19,10 @@ use 5.008001;
 
 BEGIN {
   require Module::Implementation;
-  my $impl = Module::Implementation::implementation_for('B::Hooks::EndOfScope') || do {
-    Module::Implementation::build_loader_sub(
-      implementations => [ 'XS', 'PP' ],
-      symbols => [ 'on_scope_end' ],
-    )->();
-    Module::Implementation::implementation_for('B::Hooks::EndOfScope');
-  };
-
-  *on_scope_end = $impl eq 'XS'
-    ? \&B::Hooks::EndOfScope::XS::on_scope_end
-    : \&B::Hooks::EndOfScope::PP::on_scope_end
-  ;
+  Module::Implementation::build_loader_sub(
+    implementations => [ 'XS', 'PP' ],
+    symbols => [ 'on_scope_end' ],
+  )->();
 }
 
 use Sub::Exporter::Progressive -setup => {
@@ -40,13 +34,20 @@ use Sub::Exporter::Progressive -setup => {
 1;
 
 __END__
+
 =pod
 
-=encoding utf-8
+=encoding UTF-8
+
+=for :stopwords Florian Ragwitz Peter Rabbitson Karen Etheridge Tomas Doran
 
 =head1 NAME
 
 B::Hooks::EndOfScope - Execute code after a scope finished compilation
+
+=head1 VERSION
+
+version 0.13
 
 =head1 SYNOPSIS
 
@@ -111,10 +112,23 @@ Peter Rabbitson <ribasushi@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2012 by Florian Ragwitz.
+This software is copyright (c) 2008 by Florian Ragwitz.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
-=cut
+=head1 CONTRIBUTORS
 
+=over 4
+
+=item *
+
+Karen Etheridge <ether@cpan.org>
+
+=item *
+
+Tomas Doran <bobtfish@bobtfish.net>
+
+=back
+
+=cut

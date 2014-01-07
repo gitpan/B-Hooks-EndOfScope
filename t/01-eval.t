@@ -4,6 +4,10 @@ use Test::More;
 
 use B::Hooks::EndOfScope;
 
+# FIXME!!!!! this is dreadful. This test is written so loosely that we still
+# pass all tests if we comment out the above use_ok line and replace it with:
+# sub on_scope_end(&) { shift->() }
+
 our $called;
 
 sub foo {

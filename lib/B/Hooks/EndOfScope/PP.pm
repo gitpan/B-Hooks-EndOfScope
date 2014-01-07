@@ -1,9 +1,9 @@
 package B::Hooks::EndOfScope::PP;
+{
+  $B::Hooks::EndOfScope::PP::VERSION = '0.13';
+}
 BEGIN {
   $B::Hooks::EndOfScope::PP::AUTHORITY = 'cpan:FLORA';
-}
-{
-  $B::Hooks::EndOfScope::PP::VERSION = '0.12';
 }
 # ABSTRACT: Execute code after a scope finished compilation - PP implementation
 
@@ -53,13 +53,20 @@ sub __invoke_callback {
 1;
 
 __END__
+
 =pod
 
-=encoding utf-8
+=encoding UTF-8
+
+=for :stopwords Florian Ragwitz Peter Rabbitson Karen Etheridge Tomas Doran
 
 =head1 NAME
 
 B::Hooks::EndOfScope::PP - Execute code after a scope finished compilation - PP implementation
+
+=head1 VERSION
+
+version 0.13
 
 =head1 DESCRIPTION
 
@@ -98,10 +105,9 @@ Peter Rabbitson <ribasushi@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2012 by Florian Ragwitz.
+This software is copyright (c) 2008 by Florian Ragwitz.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

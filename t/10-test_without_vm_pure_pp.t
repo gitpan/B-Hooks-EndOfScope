@@ -8,7 +8,6 @@ plan skip_all => "Tests already executed in pure-perl mode"
   if $INC{'B/Hooks/EndOfScope/PP.pm'};
 
 use Config;
-use FindBin qw($Bin);
 use IPC::Open2 qw(open2);
 use File::Glob 'bsd_glob';
 
@@ -19,11 +18,20 @@ $ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION} = '';
 $ENV{PERL5LIB} = join ($Config{path_sep}, @INC);
 
 my $has_dh = eval { require Devel::Hide };
+die 'author tests require Devel::Hide for testing the PP path!' if not $has_dh
+    and ($ENV{AUTHOR_TESTING} or $ENV{RELEASE_TESTING});
+fail 'smokers require Devel::Hide for testing the PP path!' if not $has_dh
+    and $ENV{AUTOMATED_TESTING};
+
 $ENV{DEVEL_HIDE_VERBOSE} = 0 if $has_dh;
 $ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION} = 'PP' unless $has_dh;
 
 # rerun the tests under the assumption of no vm at all
-for my $fn (bsd_glob("$Bin/0*.t")) {
+my @files = bsd_glob("t/0*.t");
+push @files, 'xt/author/00-compile.t' if $ENV{AUTHOR_TESTING};
+for my $fn (@files) {
+
+  next if $fn eq 't/00-report-prereqs.t';
 
   note "retesting $fn";
   my @cmd = (
